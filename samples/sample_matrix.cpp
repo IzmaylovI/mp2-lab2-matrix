@@ -20,6 +20,7 @@ void main()
   for (i = 0; i < 5; i++)
     for (j = i; j < 5; j++ )
     {
+      cout << i << ' ' << j << endl;
       a[i][j] =  i * 10 + j;
       b[i][j] = (i * 10 + j) * 100;
     }
