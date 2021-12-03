@@ -63,11 +63,7 @@ public:
 template <class ValType>
 TVector<ValType>::TVector(int s = 10, int si = 0)
 {
-    if (si < 0)
-    {
-        throw exception("invalid argument of Tvector");
-    }
-    if (s < 0 || s > MAX_VECTOR_SIZE)
+    if (si < 0 || si >= MAX_MATRIX_SIZE || s < 0 || s > MAX_VECTOR_SIZE)
     {
         throw exception("invalid argument of Tvector");
     }
@@ -75,7 +71,6 @@ TVector<ValType>::TVector(int s = 10, int si = 0)
     Size = s;
     StartIndex = si;
     pVector = new ValType[Size]{};
-    //pVector = new ValType[s];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
@@ -83,7 +78,7 @@ TVector<ValType>::TVector(const TVector<ValType> &v)
     : Size(v.Size)
     , StartIndex(v.StartIndex)
 {
-    pVector = new ValType[Size]{};
+    pVector = new ValType[Size];
 
     for (int i = 0; i < Size; i++)
     {
@@ -149,8 +144,8 @@ TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
         delete[] pVector;
         pVector = NULL;
         Size = v.Size;
-        
     }
+
     StartIndex = v.StartIndex;
     pVector = new ValType[Size]{};
     
@@ -202,52 +197,13 @@ TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
         throw exception("TVectors have different dim");
     }
 
-    /*
-    if (Size == v.Size)
-    {
-        TVector<ValType> res = *this;
-
-        for (int i = 0; i < Size; i++)
-        {
-            res.pVector[i] = pVector[i] + v.pVector[i];
-        }
-
-        return res;
-    }
-    
-    else
-    {
-        if (Size > v.Size)
-        {
-            TVector<ValType> res = *this;
-
-            for (int i = 0; i < v.Size; i++)
-            {
-                res.pVector[Size - v.Size + i] = pVector[Size - v.Size + i] + v.pVector[i];
-            }
-            return res;
-        }
-
-        else
-        {
-            TVector<ValType> res = v;
-
-            for (int i = 0; i < Size; i++)
-            {
-                res.pVector[v.Size - Size + i] = pVector[i] + v.pVector[v.Size - Size + i];
-            }
-            return res;
-        }
-    }
-    */
-
     int S_max = max(Size, v.Size);
     int SI_min = min(StartIndex, v.StartIndex);
     TVector<ValType> res(S_max, SI_min);
 
     for (int i = 0; i < Size; i++)
     {
-        res.pVector[S_max - Size + i] = res.pVector[S_max - Size + i] + pVector[i];
+        res.pVector[S_max - Size + i] =  pVector[i];
     }
     for (int i = 0; i < v.Size; i++)
     {
@@ -324,10 +280,6 @@ public:
 template <class ValType>
 TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 {
-    /*
-      pVector <Tvector <Valtype> > = new Tvector<Valtype>[s];  ????????????????????????//
-    */
-
     if ((s < 0) || (s > MAX_MATRIX_SIZE))
     {
         throw exception ("invalid size of TMatrix ");
@@ -335,7 +287,8 @@ TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 
     for (int i = 0; i < s; i++)
     {
-        pVector[i] = TVector<ValType>(s-i, i);
+        TVector<ValType> elem(s - i, i);
+        pVector[i] = elem;
     }
 
 } /*-------------------------------------------------------------------------*/
@@ -346,13 +299,12 @@ TMatrix<ValType>::TMatrix(const TMatrix<ValType> &mt):
 
 template <class ValType> // конструктор преобразования типа
 TMatrix<ValType>::TMatrix(const TVector<TVector<ValType> > &mt):
-  TVector<TVector<ValType> >(mt) 
+  TVector<TVector<ValType> >(mt)
 {}
 
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
 {
-    
     return(TVector<TVector<ValType> > :: operator==(mt));
 } /*-------------------------------------------------------------------------*/
 

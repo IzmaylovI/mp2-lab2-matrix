@@ -152,13 +152,16 @@ TEST(TMatrix, cant_add_matrices_with_not_equal_size)
 TEST(TMatrix, can_subtract_matrices_with_equal_size)
 {
 	TMatrix<int> Neo(5);
-	TMatrix<int> K_Reeves(6);
+	TMatrix<int> K_Reeves(5);
 
 	ASSERT_NO_THROW(Neo - K_Reeves);
 }
 
 TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
 {
-  ADD_FAILURE();
+	TMatrix<int> Neo(5);
+	TMatrix<int> K_Reeves(6);
+
+	ASSERT_ANY_THROW(Neo - K_Reeves);
 }
 
