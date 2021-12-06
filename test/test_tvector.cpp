@@ -401,3 +401,40 @@ TEST(TVector, cant_multiply_vectors_with_not_equal_size)
 	ASSERT_ANY_THROW(first * second);
 }
 
+TEST(TVector, can_be_a_vector_sequentally_mutiplied_by_a_scalar_ad_by_a_vector)
+{
+	TVector<int> R(10);
+	R[0] = 10;
+	R[1] = 20;
+	R[2] = 30;
+	R[4] = 45;
+	R[8] = 34;
+
+	TVector<int> r(8,2);
+	r[2] = 9;
+	r[4] = 10;
+	r[6] = 20;
+	r[7] = 35;
+
+	ASSERT_NO_THROW(R + r + 6);
+}
+
+TEST(TVector, the_sum_does_not_change_from_the_permutation_of_the_terms)
+{
+	TVector<int> t(5);
+	TVector<int> k(5);
+
+	t[0] = 1;
+	t[1] = 3;
+	t[2] = 5;
+	t[3] = 7;
+	t[4] = 9;
+
+	k[0] = 4;
+	k[1] = 9;
+	k[2] = 10;
+	k[3] = 6;
+	k[4] = 3;
+
+	EXPECT_EQ(t + k, k + t);
+}

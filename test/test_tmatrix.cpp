@@ -165,3 +165,65 @@ TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(Neo - K_Reeves);
 }
 
+TEST(TMatrix, can_add_and_substract_matrices_secuientially)
+{
+	TMatrix<int> Neo(3);
+	Neo[0][0] = 1;
+	Neo[0][1] = 2;
+	Neo[0][2] = 3;
+	Neo[1][1] = 4;
+	Neo[1][2] = 5;
+	Neo[2][2] = 6;
+	// 1 2 3
+	// 0 4 5
+	// 0 0 6
+
+	TMatrix<int> K_Reeves(3);
+	K_Reeves[0][0] = 1;
+	K_Reeves[0][1] = 2;
+	K_Reeves[0][2] = 3;
+	K_Reeves[1][1] = 4;
+	K_Reeves[1][2] = 5;
+	K_Reeves[2][2] = 6;
+	// 1 2 3
+	// 0 4 5
+	// 0 0 6
+
+	TMatrix<int> J_Uik(3);
+	J_Uik[0][0] = 2;
+	J_Uik[0][1] = 3;
+	J_Uik[0][2] = 4;
+	J_Uik[1][1] = 5;
+	J_Uik[1][2] = 6;
+	J_Uik[2][2] = 7;
+
+	ASSERT_NO_THROW(Neo + K_Reeves - J_Uik);
+}
+
+
+TEST(TMatrix, the_sum_does_not_change_from_the_permutation_of_the_terms)
+{
+	TMatrix<int> Neo(3);
+	Neo[0][0] = 1;
+	Neo[0][1] = 2;
+	Neo[0][2] = 3;
+	Neo[1][1] = 4;
+	Neo[1][2] = 5;
+	Neo[2][2] = 6;
+	// 1 2 3
+	// 0 4 5
+	// 0 0 6
+
+	TMatrix<int> K_Reeves(3);
+	K_Reeves[0][0] = 1;
+	K_Reeves[0][1] = 2;
+	K_Reeves[0][2] = 3;
+	K_Reeves[1][1] = 4;
+	K_Reeves[1][2] = 5;
+	K_Reeves[2][2] = 6;
+	// 1 2 3
+	// 0 4 5
+	// 0 0 6
+
+	EXPECT_EQ(Neo + K_Reeves, K_Reeves + Neo);
+}

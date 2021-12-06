@@ -114,6 +114,7 @@ bool TVector<ValType>::operator==(const TVector &v) const
             if (pVector[i] != v.pVector[i])
             {
                 flag = 0;
+                break;
             }
         }
     }
@@ -144,10 +145,10 @@ TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
         delete[] pVector;
         pVector = NULL;
         Size = v.Size;
+        pVector = new ValType[Size]{};
     }
 
     StartIndex = v.StartIndex;
-    pVector = new ValType[Size]{};
     
     for (int i = 0; i < Size; i++)
     {
